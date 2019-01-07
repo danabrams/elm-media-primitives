@@ -1,23 +1,20 @@
-module Media.Primitives
-    exposing
-        ( Error(..)
-        , TimeRanges
-        , getCurrentState
-        , getCurrentState2
-        , load
-        , pause
-        , play
-        , seek
-        , textTrackMode
-        , timeRangeDecoder
-        )
+module Media.Primitives exposing
+    ( Error(..)
+    , getCurrentState
+    , pause
+    , play
+    , seek
+    , textTrackMode
+    , timeRangeDecoder
+    )
 
 import Debug
 import Html
 import Json.Decode exposing (Decoder)
 import Json.Encode as Json
-import Media.Types exposing (State)
+import Media.Types as Types
 import Task exposing (Task)
+
 
 
 {- The goal of this module is to provide the basic functions, decoders, and access to properties that require low-level Elm/Kernel code to
@@ -30,11 +27,11 @@ import Task exposing (Task)
 
       ###Playback Control
 
-      @docs Error, play, pause, seek, load
+      @docs Error, play, pause, seek
 
       ###State
 
-      @docs textTrackMode, getCurrentState, getCurrentState2, TimeRanges, timeRangeDecoder
+      @docs textTrackMode, getCurrentState, TimeRanges, timeRangeDecoder
 
 -}
 
@@ -56,75 +53,41 @@ type Error
 
 {-| Takes a string representing the unique id of the media element, and attempts to begin playback.
 -}
-play : String -> Task Error ()
+play : Types.Id -> Task Error ()
 play id =
     Debug.todo "Implement Play Task. Make sure to check if play returns promise, and if that promise is successful"
 
 
 {-| Takes a string representing the unique id of the media element, and pauses playback.
 -}
-pause : String -> Task Error ()
+pause : Types.Id -> Task Error ()
 pause id =
     Debug.todo "Implement Pause Task"
 
 
 {-| (Seeking means moving the playhead of the current media player to a specific time) Takes a string representing the unique id of the media element, and a float representing the time you'd like to seek to, and attempts to seek to that time.
 -}
-seek : String -> Float -> Task Error ()
+seek : Types.Id -> Float -> Task Error ()
 seek id time =
     Debug.todo "Implement Seek Task"
 
 
-{-| You probably don't need to use this that often on modern browsers, but lets you reload the media element if sources have changed. Can be useful for certain complex playlist management stuff.
+{-| Sets the mode of an HTMLTrack element. (equivalent to setting the track.mode property on the element. This is to keep this attribute descriptive as the rest of the text track element is. It's only necessary here as a quirk of the api and VirtualDom (it's a readwrite propert that's a subcomponent of a read-only property).
 -}
-load : String -> Task Error ()
-load id =
-    Debug.todo "Implement Load Task"
-
-
-{-| Represents the three possible states of a text track (such as subtitles or captions)
-
-Showing : Enabled and visible
-Hidden : Enabbled and not visible (but still providing activeCue information and events)
-Disabled: Disabled (no activeCue info or events)
-
--}
-type TextTrackMode
-    = Showing
-    | Hidden
-    | Disabled
-
-
-{-| Sets the mode of an HTMLTrack element. (equivalent to setting the track.mode property on the element)
--}
-textTrackMode : TextTrackMode -> Html.Attribute msg
+textTrackMode : Types.TextTrackMode -> Html.Attribute msg
 textTrackMode mode =
     Debug.todo "Implement textTrackMode"
 
 
-{-| Represents the last decoded value of a TimeRanges object. Just a list of start and end values.
--}
-type alias TimeRanges =
-    List
-        { start : Float
-        , end : Float
-        }
-
-
 {-| Decodes TimeRanges from Json.
 -}
-timeRangeDecoder : Decoder TimeRanges
+timeRangeDecoder : Decoder Types.TimeRanges
 timeRangeDecoder =
     Debug.todo "Implement TimeRanges decoder"
 
 
 {-| A task for getting the current state of the Media object. You could, for instance, subscribe to a Time subscription and call this task everytime the clock ticked, to make sure your state was accurate to within a second. Or you could call it when the various Media Events are called.
 -}
-getCurrentState : String -> Task Error Json.Value
+getCurrentState : Types.Id -> Task Error Types.State
 getCurrentState id =
     Debug.todo "implement getState"
-
-
-{-| A very similar task for getting Current State, but returning a decoded Media.Types.State record instead of a Json.Value
--}
-getCurrentState2 : String -> Task Error State
