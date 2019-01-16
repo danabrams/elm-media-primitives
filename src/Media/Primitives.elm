@@ -4,7 +4,6 @@ module Media.Primitives exposing
     , pause
     , play
     , seek
-    , textTrackMode
     , timeRangeDecoder
     )
 
@@ -77,13 +76,6 @@ seek id time =
 textTrackMode : Types.TextTrackMode -> Html.Attribute msg
 textTrackMode mode =
     Debug.todo "Implement textTrackMode"
-
-
-{-| Decodes TimeRanges from Json.
--}
-timeRangeDecoder : Decoder Types.TimeRanges
-timeRangeDecoder =
-    Debug.todo "Implement TimeRanges decoder"
 
 
 {-| A task for getting the current state of the Media object. You could, for instance, subscribe to a Time subscription and call this task everytime the clock ticked, to make sure your state was accurate to within a second. Or you could call it when the various Media Events are called.
